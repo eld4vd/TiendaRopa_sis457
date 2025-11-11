@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FontAwesome.Sharp" Version="6.6.0" />
+    <PackageReference Include="MaterialSkin.2" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CadTiendaRopa\CadTiendaRopa.csproj" />
+    <ProjectReference Include="..\ClnTiendaRopa\ClnTiendaRopa.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic">
+      <HintPath>$(ProgramFiles)\dotnet\shared\Microsoft.NETCore.App\8.0.21\Microsoft.VisualBasic.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
