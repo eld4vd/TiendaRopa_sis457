@@ -1,4 +1,7 @@
-using CadTiendaRopa;
+﻿using CadTiendaRopa;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ClnTiendaRopa
 {
@@ -7,6 +10,17 @@ namespace ClnTiendaRopa
         public static List<Compra> listar()
         {
             return new CompraCad().listar();
+        }
+
+        // 🔥 MÉTODO BUSCAR - AGREGADO
+        public static List<Compra> buscar(string criterio)
+        {
+            var lista = listar();
+            return lista.Where(c =>
+                c.ProveedorNombre.ToLower().Contains(criterio.ToLower()) ||
+                c.EmpleadoNombre.ToLower().Contains(criterio.ToLower()) ||
+                c.Id.ToString().Contains(criterio)
+            ).ToList();
         }
 
         public static Compra obtenerPorId(int id)

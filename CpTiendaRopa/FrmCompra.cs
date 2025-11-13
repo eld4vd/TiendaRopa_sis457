@@ -2,6 +2,8 @@
 using ClnTiendaRopa;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -11,6 +13,10 @@ namespace CpTiendaRopa
     {
         private Empleado empleadoActual;
         private List<DetalleCompra> detallesCompra;
+
+        private List<Compra> comprasCompleto = new List<Compra>();
+        private int paginaActual = 1;
+        private const int REGISTROS_POR_PAGINA = 10;
 
         public FrmCompra(Empleado empleado)
         {
@@ -27,6 +33,422 @@ namespace CpTiendaRopa
 
             lblEmpleado.Text = $"Empleado: {empleadoActual.Nombre}";
             dtpFecha.Value = DateTime.Now;
+
+            ConfigurarDataGridView();
+            listar();
+        }
+
+        // 🔥 CONFIGURAR DATAGRIDVIEW CON ESTILO PREMIUM
+        private void ConfigurarDataGridView()
+        {
+            dgvCompras.AutoGenerateColumns = false;
+            dgvCompras.Columns.Clear();
+            dgvCompras.AllowUserToResizeColumns = false;
+            dgvCompras.RowTemplate.Height = 50;
+
+            // Configuración visual moderna
+            dgvCompras.BorderStyle = BorderStyle.None;
+            dgvCompras.BackgroundColor = Color.White;
+            dgvCompras.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvCompras.GridColor = Color.FromArgb(240, 240, 240);
+            dgvCompras.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvCompras.MultiSelect = false;
+            dgvCompras.RowHeadersVisible = false;
+            dgvCompras.EnableHeadersVisualStyles = false;
+
+            // Estilo del header
+            dgvCompras.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(249, 250, 251);
+            dgvCompras.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(75, 85, 99);
+            dgvCompras.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            dgvCompras.ColumnHeadersDefaultCellStyle.Padding = new Padding(10, 8, 10, 8);
+            dgvCompras.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(249, 250, 251);
+            dgvCompras.ColumnHeadersHeight = 48;
+
+            // Estilo de las filas
+            dgvCompras.DefaultCellStyle.BackColor = Color.White;
+            dgvCompras.DefaultCellStyle.ForeColor = Color.FromArgb(31, 41, 55);
+            dgvCompras.DefaultCellStyle.SelectionBackColor = Color.FromArgb(239, 246, 255);
+            dgvCompras.DefaultCellStyle.SelectionForeColor = Color.FromArgb(37, 99, 235);
+            dgvCompras.DefaultCellStyle.Padding = new Padding(10, 5, 10, 5);
+
+            // Alternar colores de filas
+            dgvCompras.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(249, 250, 251);
+            dgvCompras.AlternatingRowsDefaultCellStyle.SelectionBackColor = Color.FromArgb(239, 246, 255);
+            dgvCompras.AlternatingRowsDefaultCellStyle.SelectionForeColor = Color.FromArgb(37, 99, 235);
+
+            // Columna ID
+            dgvCompras.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "Id",
+                HeaderText = "N° Compra",
+                Width = 100,
+                ReadOnly = true,
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    Alignment = DataGridViewContentAlignment.MiddleCenter,
+                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(99, 102, 241),
+                    BackColor = Color.FromArgb(238, 242, 255),
+                    SelectionBackColor = Color.FromArgb(224, 231, 255),
+                    SelectionForeColor = Color.FromArgb(79, 70, 229),
+                    Padding = new Padding(8, 5, 8, 5)
+                }
+            });
+
+            // Columna Fecha
+            dgvCompras.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "Fecha",
+                HeaderText = "📅 Fecha",
+                Width = 180,
+                ReadOnly = true,
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    Alignment = DataGridViewContentAlignment.MiddleCenter,
+                    Font = new Font("Segoe UI", 9.5F),
+                    Format = "dd/MM/yyyy HH:mm",
+                    ForeColor = Color.FromArgb(55, 65, 81)
+                }
+            });
+
+            // Columna Proveedor
+            dgvCompras.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "ProveedorNombre",
+                HeaderText = "🏢 Proveedor",
+                Width = 200,
+                ReadOnly = true,
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    Alignment = DataGridViewContentAlignment.MiddleLeft,
+                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(17, 24, 39),
+                    Padding = new Padding(12, 5, 5, 5)
+                }
+            });
+
+            // Columna Empleado
+            dgvCompras.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "EmpleadoNombre",
+                HeaderText = "👨‍💼 Comprador",
+                Width = 180,
+                ReadOnly = true,
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    Alignment = DataGridViewContentAlignment.MiddleLeft,
+                    Font = new Font("Segoe UI", 9.5F),
+                    ForeColor = Color.FromArgb(55, 65, 81),
+                    BackColor = Color.FromArgb(249, 250, 251),
+                    SelectionBackColor = Color.FromArgb(239, 246, 255)
+                }
+            });
+
+            // Columna Total
+            dgvCompras.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "Total",
+                HeaderText = "💰 Total",
+                Width = 150,
+                ReadOnly = true,
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    Alignment = DataGridViewContentAlignment.MiddleRight,
+                    Font = new Font("Consolas", 11F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(220, 38, 38),
+                    Format = "C2",
+                    Padding = new Padding(5, 5, 12, 5)
+                }
+            });
+
+            // COLUMNA DE ACCIONES (Ver Detalle + Anular)
+            var colAcciones = new DataGridViewTextBoxColumn
+            {
+                Name = "Acciones",
+                HeaderText = "⚙️ Acciones",
+                Width = 180,
+                ReadOnly = true,
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    Alignment = DataGridViewContentAlignment.MiddleCenter,
+                    BackColor = Color.White,
+                    SelectionBackColor = Color.White
+                }
+            };
+            dgvCompras.Columns.Add(colAcciones);
+
+            // Eventos
+            dgvCompras.CellPainting += DgvCompras_CellPainting;
+            dgvCompras.CellClick += DgvCompras_CellClick;
+            dgvCompras.CellMouseMove += DgvCompras_CellMouseMove;
+        }
+
+        // 🔥 DIBUJAR BOTONES (Ver Detalle + Anular)
+        private void DgvCompras_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.ColumnIndex == dgvCompras.Columns["Acciones"].Index && e.RowIndex >= 0)
+            {
+                e.Paint(e.CellBounds, DataGridViewPaintParts.All);
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+                Rectangle btnVer = new Rectangle(e.CellBounds.X + 15, e.CellBounds.Y + 10, 70, 32);
+                Rectangle btnAnular = new Rectangle(e.CellBounds.X + 95, e.CellBounds.Y + 10, 70, 32);
+
+                // Dibujar Ver Detalle (verde)
+                using (GraphicsPath path = GetRoundedRectPath(btnVer, 6))
+                {
+                    using (LinearGradientBrush brush = new LinearGradientBrush(
+                        btnVer, Color.FromArgb(34, 197, 94), Color.FromArgb(22, 163, 74), LinearGradientMode.Vertical))
+                    {
+                        e.Graphics.FillPath(brush, path);
+                    }
+                    using (Pen pen = new Pen(Color.FromArgb(21, 128, 61), 1))
+                    {
+                        e.Graphics.DrawPath(pen, path);
+                    }
+                }
+
+                using (Font font = new Font("Segoe UI", 9F, FontStyle.Bold))
+                using (SolidBrush textBrush = new SolidBrush(Color.White))
+                {
+                    StringFormat sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
+                    e.Graphics.DrawString("👁 Ver", font, textBrush, btnVer, sf);
+                }
+
+                // Dibujar Anular
+                using (GraphicsPath path = GetRoundedRectPath(btnAnular, 6))
+                {
+                    using (LinearGradientBrush brush = new LinearGradientBrush(
+                        btnAnular, Color.FromArgb(239, 68, 68), Color.FromArgb(220, 38, 38), LinearGradientMode.Vertical))
+                    {
+                        e.Graphics.FillPath(brush, path);
+                    }
+                    using (Pen pen = new Pen(Color.FromArgb(185, 28, 28), 1))
+                    {
+                        e.Graphics.DrawPath(pen, path);
+                    }
+                }
+
+                using (Font font = new Font("Segoe UI", 9F, FontStyle.Bold))
+                using (SolidBrush textBrush = new SolidBrush(Color.White))
+                {
+                    StringFormat sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
+                    e.Graphics.DrawString("✗ Anular", font, textBrush, btnAnular, sf);
+                }
+
+                e.Handled = true;
+            }
+        }
+
+        private GraphicsPath GetRoundedRectPath(Rectangle rect, int radius)
+        {
+            GraphicsPath path = new GraphicsPath();
+            float r = radius;
+            path.StartFigure();
+            path.AddArc(rect.X, rect.Y, r, r, 180, 90);
+            path.AddArc(rect.Right - r, rect.Y, r, r, 270, 90);
+            path.AddArc(rect.Right - r, rect.Bottom - r, r, r, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - r, r, r, 90, 90);
+            path.CloseFigure();
+            return path;
+        }
+
+        private void DgvCompras_CellMouseMove(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.ColumnIndex == dgvCompras.Columns["Acciones"].Index && e.RowIndex >= 0)
+            {
+                dgvCompras.Cursor = Cursors.Hand;
+            }
+            else
+            {
+                dgvCompras.Cursor = Cursors.Default;
+            }
+        }
+
+        private void DgvCompras_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == dgvCompras.Columns["Acciones"].Index && e.RowIndex >= 0)
+            {
+                var compra = (Compra)dgvCompras.Rows[e.RowIndex].DataBoundItem;
+                Rectangle cellRect = dgvCompras.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
+                Point mousePos = dgvCompras.PointToClient(Control.MousePosition);
+                int relativeX = mousePos.X - cellRect.X;
+
+                Rectangle btnVer = new Rectangle(15, 0, 70, cellRect.Height);
+                Rectangle btnAnular = new Rectangle(95, 0, 70, cellRect.Height);
+
+                if (relativeX >= btnVer.X && relativeX <= (btnVer.X + btnVer.Width))
+                {
+                    VerDetalleCompra(compra);
+                }
+                else if (relativeX >= btnAnular.X && relativeX <= (btnAnular.X + btnAnular.Width))
+                {
+                    AnularCompra(compra);
+                }
+            }
+        }
+
+        // 🔥 VER DETALLE DE COMPRA
+        private void VerDetalleCompra(Compra compra)
+        {
+            var compraCompleta = CompraCln.obtenerPorId(compra.Id);
+
+            if (compraCompleta == null || compraCompleta.Detalles == null || compraCompleta.Detalles.Count == 0)
+            {
+                MessageBox.Show("⚠️ No se encontraron detalles para esta compra", "Información",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string mensaje = $"📋 DETALLE DE COMPRA #{compra.Id}\n\n";
+            mensaje += $"📅 Fecha: {compra.Fecha:dd/MM/yyyy HH:mm}\n";
+            mensaje += $"🏢 Proveedor: {compra.ProveedorNombre}\n";
+            mensaje += $"👨‍💼 Comprador: {compra.EmpleadoNombre}\n";
+            mensaje += $"\n{'─',60}\n";
+            mensaje += $"PRODUCTOS:\n";
+            mensaje += $"{'─',60}\n\n";
+
+            decimal subtotalGeneral = 0;
+            foreach (var detalle in compraCompleta.Detalles)
+            {
+                mensaje += $"📦 {detalle.ProductoNombre}\n";
+                mensaje += $"   📏 Talla: {detalle.ProductoTalla}  |  🎨 Color: {detalle.ProductoColor}\n";
+                mensaje += $"   💰 {detalle.PrecioUnitario:C2} x {detalle.Cantidad} = {detalle.Subtotal:C2}\n\n";
+                subtotalGeneral += detalle.Subtotal;
+            }
+
+            mensaje += $"{'─',60}\n";
+            mensaje += $"💵 TOTAL: {compra.Total:C2}\n";
+            mensaje += $"{'─',60}";
+
+            MessageBox.Show(mensaje, "📦 Detalle de Compra", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        // 🔥 ANULAR COMPRA
+        private void AnularCompra(Compra compra)
+        {
+            var confirmacion = MessageBox.Show(
+                $"⚠️ ¿Está seguro de ANULAR esta compra?\n\n" +
+                $"📋 Compra #: {compra.Id}\n" +
+                $"📅 Fecha: {compra.Fecha:dd/MM/yyyy HH:mm}\n" +
+                $"🏢 Proveedor: {compra.ProveedorNombre}\n" +
+                $"💰 Total: {compra.Total:C2}\n\n" +
+                $"⚠️ Esta acción no se puede deshacer.",
+                "⚠️ Confirmar Anulación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (confirmacion == DialogResult.Yes)
+            {
+                CompraCln.eliminar(compra.Id);
+                MessageBox.Show(
+                    $"✅ Compra anulada correctamente\n\n📋 Compra #{compra.Id}",
+                    "Éxito",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                int registrosEnPaginaActual = comprasCompleto
+                    .Skip((paginaActual - 1) * REGISTROS_POR_PAGINA)
+                    .Take(REGISTROS_POR_PAGINA)
+                    .Count();
+
+                if (registrosEnPaginaActual == 1 && paginaActual > 1)
+                {
+                    paginaActual--;
+                }
+
+                listar();
+            }
+        }
+
+        private void listar()
+        {
+            comprasCompleto = CompraCln.listar().OrderByDescending(c => c.Id).ToList();
+            MostrarPagina();
+        }
+
+        private void MostrarPagina()
+        {
+            var comprasPaginadas = comprasCompleto
+                .Skip((paginaActual - 1) * REGISTROS_POR_PAGINA)
+                .Take(REGISTROS_POR_PAGINA)
+                .ToList();
+
+            dgvCompras.DataSource = comprasPaginadas;
+            ActualizarInfoPaginacion();
+        }
+
+        private void ActualizarInfoPaginacion()
+        {
+            int totalPaginas = (int)Math.Ceiling((double)comprasCompleto.Count / REGISTROS_POR_PAGINA);
+            if (totalPaginas == 0) totalPaginas = 1;
+
+            decimal totalCompras = comprasCompleto.Sum(c => c.Total);
+            lblPaginacion.Text = $"📄 Página {paginaActual} de {totalPaginas} | 💰 Total compras: {totalCompras:C2} | 📊 {comprasCompleto.Count} registros";
+
+            btnAnterior.Enabled = paginaActual > 1;
+            btnSiguiente.Enabled = paginaActual < totalPaginas;
+        }
+
+        private void btnAnterior_Click(object sender, EventArgs e)
+        {
+            if (paginaActual > 1)
+            {
+                paginaActual--;
+                MostrarPagina();
+            }
+        }
+
+        private void btnSiguiente_Click(object sender, EventArgs e)
+        {
+            int totalPaginas = (int)Math.Ceiling((double)comprasCompleto.Count / REGISTROS_POR_PAGINA);
+            if (paginaActual < totalPaginas)
+            {
+                paginaActual++;
+                MostrarPagina();
+            }
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtBuscar.Text))
+            {
+                paginaActual = 1;
+                listar();
+            }
+            else
+            {
+                comprasCompleto = CompraCln.buscar(txtBuscar.Text.Trim())
+                    .OrderByDescending(c => c.Id)
+                    .ToList();
+                paginaActual = 1;
+                MostrarPagina();
+            }
+        }
+
+        private void txtBuscar_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                btnBuscar_Click(sender, e);
+            }
+        }
+
+        // 🔥 BOTÓN NUEVA COMPRA
+        private void btnNuevaCompra_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(
+                "💡 Esta funcionalidad abrirá el formulario de:\n\n" +
+                "📦 REGISTRO DE COMPRAS\n\n" +
+                "Donde podrás:\n" +
+                "• Seleccionar proveedor\n" +
+                "• Agregar productos al inventario\n" +
+                "• Calcular total\n" +
+                "• Registrar la compra\n\n" +
+                "✨ Será implementado próximamente",
+                "Nueva Compra",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
 
         private void cargarProveedores()
@@ -434,7 +856,5 @@ namespace CpTiendaRopa
                 MessageBox.Show(detalle, "Detalle de Compra", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-
-        // ❌ YA NO NECESITAS EL btnCerrar_Click - ESTÁ ELIMINADO
     }
 }

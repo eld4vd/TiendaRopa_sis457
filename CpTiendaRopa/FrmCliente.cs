@@ -3,6 +3,7 @@ using ClnTiendaRopa;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -14,6 +15,9 @@ namespace CpTiendaRopa
         private List<Cliente> clientesCompleto = new List<Cliente>();
         private int paginaActual = 1;
         private const int REGISTROS_POR_PAGINA = 10;
+        private int clienteEditandoId = 0;
+        private Rectangle rectBtnEditar;
+        private Rectangle rectBtnEliminar;
 
         public FrmCliente()
         {
@@ -27,190 +31,328 @@ namespace CpTiendaRopa
             configurarControles(false);
         }
 
-        // 🔥 CONFIGURAR DATAGRIDVIEW CON COLUMNA DE ACCIONES
+        // 🔥 CONFIGURAR DATAGRIDVIEW CON ESTILO PREMIUM
         private void ConfigurarDataGridView()
         {
             dgvClientes.AutoGenerateColumns = false;
             dgvClientes.Columns.Clear();
+            dgvClientes.AllowUserToResizeColumns = false;
+            dgvClientes.RowTemplate.Height = 50;
+            
+            // Configuración visual moderna
+            dgvClientes.BorderStyle = BorderStyle.None;
+            dgvClientes.BackgroundColor = Color.White;
+            dgvClientes.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvClientes.GridColor = Color.FromArgb(240, 240, 240);
+            dgvClientes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvClientes.MultiSelect = false;
+            dgvClientes.RowHeadersVisible = false;
+            dgvClientes.EnableHeadersVisualStyles = false;
+            
+            // Estilo del header
+            dgvClientes.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(249, 250, 251);
+            dgvClientes.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(75, 85, 99);
+            dgvClientes.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            dgvClientes.ColumnHeadersDefaultCellStyle.Padding = new Padding(10, 8, 10, 8);
+            dgvClientes.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(249, 250, 251);
+            dgvClientes.ColumnHeadersHeight = 48;
+            
+            // Estilo de las filas
+            dgvClientes.DefaultCellStyle.BackColor = Color.White;
+            dgvClientes.DefaultCellStyle.ForeColor = Color.FromArgb(31, 41, 55);
+            dgvClientes.DefaultCellStyle.SelectionBackColor = Color.FromArgb(239, 246, 255);
+            dgvClientes.DefaultCellStyle.SelectionForeColor = Color.FromArgb(37, 99, 235);
+            dgvClientes.DefaultCellStyle.Padding = new Padding(10, 5, 10, 5);
+            
+            // Alternar colores de filas
+            dgvClientes.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(249, 250, 251);
+            dgvClientes.AlternatingRowsDefaultCellStyle.SelectionBackColor = Color.FromArgb(239, 246, 255);
+            dgvClientes.AlternatingRowsDefaultCellStyle.SelectionForeColor = Color.FromArgb(37, 99, 235);
 
-            // Columna ID
+            // Columna ID con badge
             dgvClientes.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "Id",
                 HeaderText = "ID",
-                Width = 80,
-                DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleCenter }
+                Width = 70,
+                ReadOnly = true,
+                DefaultCellStyle = new DataGridViewCellStyle 
+                { 
+                    Alignment = DataGridViewContentAlignment.MiddleCenter,
+                    Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(99, 102, 241),
+                    BackColor = Color.FromArgb(238, 242, 255),
+                    SelectionBackColor = Color.FromArgb(224, 231, 255),
+                    SelectionForeColor = Color.FromArgb(79, 70, 229),
+                    Padding = new Padding(8, 5, 8, 5)
+                }
             });
 
             // Columna Nombre
             dgvClientes.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "Nombre",
-                HeaderText = "Nombre Completo",
+                HeaderText = "👤 Nombre Completo",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
-                FillWeight = 50
+                ReadOnly = true,
+                DefaultCellStyle = new DataGridViewCellStyle 
+                { 
+                    Alignment = DataGridViewContentAlignment.MiddleLeft,
+                    Font = new Font("Segoe UI", 10F, FontStyle.Regular),
+                    ForeColor = Color.FromArgb(17, 24, 39),
+                    Padding = new Padding(12, 5, 5, 5)
+                }
             });
 
             // Columna CI
             dgvClientes.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "CI",
-                HeaderText = "CI/NIT",
-                Width = 150,
-                DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleCenter }
+                HeaderText = "🆔 CI/NIT",
+                Width = 140,
+                ReadOnly = true,
+                DefaultCellStyle = new DataGridViewCellStyle 
+                { 
+                    Alignment = DataGridViewContentAlignment.MiddleCenter,
+                    Font = new Font("Consolas", 10F),
+                    ForeColor = Color.FromArgb(55, 65, 81),
+                    BackColor = Color.FromArgb(249, 250, 251),
+                    SelectionBackColor = Color.FromArgb(239, 246, 255)
+                }
             });
 
             // Columna Teléfono
             dgvClientes.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "Telefono",
-                HeaderText = "Teléfono",
-                Width = 180,
-                DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleCenter }
+                HeaderText = "📞 Teléfono",
+                Width = 150,
+                ReadOnly = true,
+                DefaultCellStyle = new DataGridViewCellStyle 
+                { 
+                    Alignment = DataGridViewContentAlignment.MiddleCenter,
+                    Font = new Font("Consolas", 10F),
+                    ForeColor = Color.FromArgb(55, 65, 81)
+                }
             });
 
-            // 🔥 COLUMNA DE ACCIONES
-            var colAcciones = new DataGridViewButtonColumn
+            // COLUMNA DE ACCIONES
+            var colAcciones = new DataGridViewTextBoxColumn
             {
                 Name = "Acciones",
-                HeaderText = "Acciones",
-                Width = 150,
-                Text = "Ver",
-                UseColumnTextForButtonValue = false,
+                HeaderText = "⚙️ Acciones",
+                Width = 180,
+                ReadOnly = true,
                 DefaultCellStyle = new DataGridViewCellStyle
                 {
                     Alignment = DataGridViewContentAlignment.MiddleCenter,
-                    BackColor = Color.FromArgb(249, 250, 251),
-                    SelectionBackColor = Color.FromArgb(249, 250, 251)
+                    BackColor = Color.White,
+                    SelectionBackColor = Color.White
                 }
             };
             dgvClientes.Columns.Add(colAcciones);
 
-            // Evento CellPainting para dibujar los botones personalizados
+            // Eventos
             dgvClientes.CellPainting += DgvClientes_CellPainting;
-            dgvClientes.CellClick += DgvClientes_CellClick;
+            dgvClientes.CellClick += DgvClientes_CellClick; // 🔥 CAMBIADO a CellClick
+            dgvClientes.CellMouseMove += DgvClientes_CellMouseMove;
         }
 
-        // 🔥 DIBUJAR BOTONES PERSONALIZADOS EN LA COLUMNA ACCIONES
+        // 🔥 DIBUJAR BOTONES
         private void DgvClientes_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.ColumnIndex == dgvClientes.Columns["Acciones"].Index && e.RowIndex >= 0)
             {
                 e.Paint(e.CellBounds, DataGridViewPaintParts.All);
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
-                // Botón Editar
-                var btnEditarRect = new Rectangle(
-                    e.CellBounds.X + 10,
-                    e.CellBounds.Y + (e.CellBounds.Height - 30) / 2,
-                    60,
-                    30
+                // Definir rectángulos de botones
+                Rectangle btnEditar = new Rectangle(
+                    e.CellBounds.X + 15,
+                    e.CellBounds.Y + 10,
+                    70,
+                    32
                 );
 
-                // Botón Eliminar
-                var btnEliminarRect = new Rectangle(
-                    e.CellBounds.X + 80,
-                    e.CellBounds.Y + (e.CellBounds.Height - 30) / 2,
-                    60,
-                    30
+                Rectangle btnEliminar = new Rectangle(
+                    e.CellBounds.X + 95,
+                    e.CellBounds.Y + 10,
+                    70,
+                    32
                 );
 
-                // Dibujar botón Editar (Azul)
-                using (var brush = new SolidBrush(Color.FromArgb(59, 130, 246)))
-                using (var pen = new Pen(Color.FromArgb(37, 99, 235), 1))
+                // Dibujar Editar
+                using (GraphicsPath path = GetRoundedRectPath(btnEditar, 6))
                 {
-                    e.Graphics.FillRoundedRectangle(brush, btnEditarRect, 5);
-                    e.Graphics.DrawRoundedRectangle(pen, btnEditarRect, 5);
-                    
-                    using (var font = new Font("Segoe UI", 8, FontStyle.Bold))
-                    using (var textBrush = new SolidBrush(Color.White))
+                    using (LinearGradientBrush brush = new LinearGradientBrush(
+                        btnEditar, 
+                        Color.FromArgb(59, 130, 246), 
+                        Color.FromArgb(37, 99, 235), 
+                        LinearGradientMode.Vertical))
                     {
-                        var textSize = e.Graphics.MeasureString("✏️ Editar", font);
-                        var textX = btnEditarRect.X + (btnEditarRect.Width - textSize.Width) / 2;
-                        var textY = btnEditarRect.Y + (btnEditarRect.Height - textSize.Height) / 2;
-                        e.Graphics.DrawString("✏️ Editar", font, textBrush, textX, textY);
+                        e.Graphics.FillPath(brush, path);
+                    }
+                    
+                    using (Pen pen = new Pen(Color.FromArgb(29, 78, 216), 1))
+                    {
+                        e.Graphics.DrawPath(pen, path);
                     }
                 }
 
-                // Dibujar botón Eliminar (Rojo)
-                using (var brush = new SolidBrush(Color.FromArgb(239, 68, 68)))
-                using (var pen = new Pen(Color.FromArgb(220, 38, 38), 1))
+                using (Font font = new Font("Segoe UI", 9F, FontStyle.Bold))
+                using (SolidBrush textBrush = new SolidBrush(Color.White))
                 {
-                    e.Graphics.FillRoundedRectangle(brush, btnEliminarRect, 5);
-                    e.Graphics.DrawRoundedRectangle(pen, btnEliminarRect, 5);
-                    
-                    using (var font = new Font("Segoe UI", 8, FontStyle.Bold))
-                    using (var textBrush = new SolidBrush(Color.White))
+                    StringFormat sf = new StringFormat
                     {
-                        var textSize = e.Graphics.MeasureString("🗑️ Eliminar", font);
-                        var textX = btnEliminarRect.X + (btnEliminarRect.Width - textSize.Width) / 2;
-                        var textY = btnEliminarRect.Y + (btnEliminarRect.Height - textSize.Height) / 2;
-                        e.Graphics.DrawString("🗑️ Eliminar", font, textBrush, textX, textY);
+                        Alignment = StringAlignment.Center,
+                        LineAlignment = StringAlignment.Center
+                    };
+                    e.Graphics.DrawString("✎ Editar", font, textBrush, btnEditar, sf);
+                }
+
+                // Dibujar Eliminar
+                using (GraphicsPath path = GetRoundedRectPath(btnEliminar, 6))
+                {
+                    using (LinearGradientBrush brush = new LinearGradientBrush(
+                        btnEliminar, 
+                        Color.FromArgb(239, 68, 68), 
+                        Color.FromArgb(220, 38, 38), 
+                        LinearGradientMode.Vertical))
+                    {
+                        e.Graphics.FillPath(brush, path);
                     }
+                    
+                    using (Pen pen = new Pen(Color.FromArgb(185, 28, 28), 1))
+                    {
+                        e.Graphics.DrawPath(pen, path);
+                    }
+                }
+
+                using (Font font = new Font("Segoe UI", 9F, FontStyle.Bold))
+                using (SolidBrush textBrush = new SolidBrush(Color.White))
+                {
+                    StringFormat sf = new StringFormat
+                    {
+                        Alignment = StringAlignment.Center,
+                        LineAlignment = StringAlignment.Center
+                    };
+                    e.Graphics.DrawString("✗ Eliminar", font, textBrush, btnEliminar, sf);
                 }
 
                 e.Handled = true;
             }
         }
 
-        // 🔥 MANEJAR CLICS EN LOS BOTONES DE ACCIONES
+        private GraphicsPath GetRoundedRectPath(Rectangle rect, int radius)
+        {
+            GraphicsPath path = new GraphicsPath();
+            float r = radius;
+            path.StartFigure();
+            path.AddArc(rect.X, rect.Y, r, r, 180, 90);
+            path.AddArc(rect.Right - r, rect.Y, r, r, 270, 90);
+            path.AddArc(rect.Right - r, rect.Bottom - r, r, r, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - r, r, r, 90, 90);
+            path.CloseFigure();
+            return path;
+        }
+
+        // 🔥 CAMBIAR CURSOR AL HOVER
+        private void DgvClientes_CellMouseMove(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.ColumnIndex == dgvClientes.Columns["Acciones"].Index && e.RowIndex >= 0)
+            {
+                dgvClientes.Cursor = Cursors.Hand;
+            }
+            else
+            {
+                dgvClientes.Cursor = Cursors.Default;
+            }
+        }
+
+        // 🔥 MANEJAR CLICS - CORREGIDO
         private void DgvClientes_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == dgvClientes.Columns["Acciones"].Index && e.RowIndex >= 0)
             {
                 var cliente = (Cliente)dgvClientes.Rows[e.RowIndex].DataBoundItem;
-                var cellRect = dgvClientes.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
-                var clickPoint = dgvClientes.PointToClient(Cursor.Position);
-                var relativeX = clickPoint.X - cellRect.X;
-
-                // Detectar qué botón se clickeó
-                if (relativeX >= 10 && relativeX <= 70) // Botón Editar
+                
+                // Obtener rectángulo de la celda
+                Rectangle cellRect = dgvClientes.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
+                
+                // Obtener posición del mouse en coordenadas de pantalla
+                Point mousePos = dgvClientes.PointToClient(Control.MousePosition);
+                
+                // Calcular posición relativa dentro de la celda
+                int relativeX = mousePos.X - cellRect.X;
+                
+                // Definir áreas de los botones (igual que en CellPainting)
+                Rectangle btnEditar = new Rectangle(15, 0, 70, cellRect.Height);
+                Rectangle btnEliminar = new Rectangle(95, 0, 70, cellRect.Height);
+                
+                if (relativeX >= btnEditar.X && relativeX <= (btnEditar.X + btnEditar.Width))
                 {
+                    // Clic en Editar
                     EditarCliente(cliente);
                 }
-                else if (relativeX >= 80 && relativeX <= 140) // Botón Eliminar
+                else if (relativeX >= btnEliminar.X && relativeX <= (btnEliminar.X + btnEliminar.Width))
                 {
+                    // Clic en Eliminar
                     EliminarCliente(cliente);
                 }
             }
         }
 
-        // 🔥 EDITAR CLIENTE (CARGAR DATOS Y HACER SCROLL ARRIBA)
         private void EditarCliente(Cliente cliente)
         {
             esNuevo = false;
+            clienteEditandoId = cliente.Id;
 
             txtNombre.Text = cliente.Nombre;
             txtCI.Text = cliente.CI;
             txtTelefono.Text = cliente.Telefono;
 
             configurarControles(true);
-            txtNombre.Focus();
-
-            // Hacer scroll hacia arriba para mostrar el formulario
             pnlContenedor.AutoScrollPosition = new Point(0, 0);
+            txtNombre.Focus();
         }
 
-        // 🔥 ELIMINAR CLIENTE (CON CONFIRMACIÓN)
         private void EliminarCliente(Cliente cliente)
         {
             var confirmacion = MessageBox.Show(
-                $"¿Está seguro de eliminar al cliente:\n\n{cliente.Nombre}?", 
-                "⚠️ Confirmar Eliminación", 
-                MessageBoxButtons.YesNo, 
+                $"¿Está seguro de eliminar al cliente?\n\n" +
+                $"📋 Nombre: {cliente.Nombre}\n" +
+                $"🆔 CI: {cliente.CI}\n" +
+                $"📞 Teléfono: {cliente.Telefono}",
+                "⚠️ Confirmar Eliminación",
+                MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning);
 
             if (confirmacion == DialogResult.Yes)
             {
                 ClienteCln.eliminar(cliente.Id);
-                MessageBox.Show("Cliente eliminado correctamente", "✅ Éxito", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(
+                    $"✅ Cliente eliminado correctamente\n\n📋 {cliente.Nombre}", 
+                    "Éxito", 
+                    MessageBoxButtons.OK, 
+                    MessageBoxIcon.Information);
+                
+                int registrosEnPaginaActual = clientesCompleto
+                    .Skip((paginaActual - 1) * REGISTROS_POR_PAGINA)
+                    .Take(REGISTROS_POR_PAGINA)
+                    .Count();
+                
+                if (registrosEnPaginaActual == 1 && paginaActual > 1)
+                {
+                    paginaActual--;
+                }
+                
                 listar();
             }
         }
 
         private void listar()
         {
-            clientesCompleto = ClienteCln.listar();
+            clientesCompleto = ClienteCln.listar().OrderByDescending(c => c.Id).ToList();
             MostrarPagina();
         }
 
@@ -228,7 +370,9 @@ namespace CpTiendaRopa
         private void ActualizarInfoPaginacion()
         {
             int totalPaginas = (int)Math.Ceiling((double)clientesCompleto.Count / REGISTROS_POR_PAGINA);
-            lblPaginacion.Text = $"Página {paginaActual} de {totalPaginas} | Total: {clientesCompleto.Count} clientes";
+            if (totalPaginas == 0) totalPaginas = 1;
+            
+            lblPaginacion.Text = $"📄 Página {paginaActual} de {totalPaginas} | 👥 Total: {clientesCompleto.Count} clientes";
 
             btnAnterior.Enabled = paginaActual > 1;
             btnSiguiente.Enabled = paginaActual < totalPaginas;
@@ -260,8 +404,8 @@ namespace CpTiendaRopa
             txtTelefono.Enabled = habilitar;
 
             btnNuevo.Enabled = !habilitar;
-            btnEditar.Enabled = false; // Ya no se usa
-            btnEliminar.Enabled = false; // Ya no se usa
+            btnEditar.Visible = false;
+            btnEliminar.Visible = false;
             btnBuscar.Enabled = !habilitar;
             dgvClientes.Enabled = !habilitar;
 
@@ -277,6 +421,7 @@ namespace CpTiendaRopa
             txtNombre.Clear();
             txtCI.Clear();
             txtTelefono.Clear();
+            clienteEditandoId = 0;
         }
 
         private void btnNuevo_Click(object sender, EventArgs e)
@@ -284,16 +429,13 @@ namespace CpTiendaRopa
             esNuevo = true;
             limpiarControles();
             configurarControles(true);
-            txtNombre.Focus();
-            
-            // Hacer scroll hacia arriba
             pnlContenedor.AutoScrollPosition = new Point(0, 0);
+            txtNombre.Focus();
         }
 
         private void btnEditar_Click(object sender, EventArgs e)
         {
-            // Ya no se usa - ahora se edita desde la columna de acciones
-            MessageBox.Show("Use los botones ✏️ Editar en la columna Acciones", 
+            MessageBox.Show("💡 Use los botones ✎ Editar en la columna Acciones", 
                 "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -301,7 +443,7 @@ namespace CpTiendaRopa
         {
             if (string.IsNullOrWhiteSpace(txtNombre.Text))
             {
-                MessageBox.Show("El nombre es obligatorio", "Validación", 
+                MessageBox.Show("⚠️ El nombre es obligatorio", "Validación", 
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtNombre.Focus();
                 return;
@@ -317,22 +459,15 @@ namespace CpTiendaRopa
             if (esNuevo)
             {
                 ClienteCln.crear(cliente);
-                MessageBox.Show("Cliente registrado correctamente", "✅ Éxito", 
+                MessageBox.Show("✅ Cliente registrado correctamente", "Éxito", 
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                // Buscar el cliente actual en la lista completa
-                var clienteOriginal = clientesCompleto.FirstOrDefault(c => 
-                    c.Nombre == txtNombre.Text.Trim() || c.CI == txtCI.Text.Trim());
-                
-                if (clienteOriginal != null)
-                {
-                    cliente.Id = clienteOriginal.Id;
-                    ClienteCln.actualizar(cliente);
-                    MessageBox.Show("Cliente actualizado correctamente", "✅ Éxito", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                cliente.Id = clienteEditandoId;
+                ClienteCln.actualizar(cliente);
+                MessageBox.Show("✅ Cliente actualizado correctamente", "Éxito", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
             limpiarControles();
@@ -348,8 +483,7 @@ namespace CpTiendaRopa
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            // Ya no se usa - ahora se elimina desde la columna de acciones
-            MessageBox.Show("Use los botones 🗑️ Elim en la columna Acciones", 
+            MessageBox.Show("💡 Use los botones ✗ Eliminar en la columna Acciones", 
                 "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -362,7 +496,9 @@ namespace CpTiendaRopa
             }
             else
             {
-                clientesCompleto = ClienteCln.buscar(txtBuscar.Text.Trim());
+                clientesCompleto = ClienteCln.buscar(txtBuscar.Text.Trim())
+                    .OrderByDescending(c => c.Id)
+                    .ToList();
                 paginaActual = 1;
                 MostrarPagina();
             }
@@ -374,51 +510,6 @@ namespace CpTiendaRopa
             {
                 btnBuscar_Click(sender, e);
             }
-        }
-    }
-
-    // 🔥 EXTENSIÓN PARA DIBUJAR RECTÁNGULOS REDONDEADOS
-    public static class GraphicsExtensions
-    {
-        public static void FillRoundedRectangle(this Graphics graphics, Brush brush, Rectangle bounds, int cornerRadius)
-        {
-            using (var path = GetRoundedRect(bounds, cornerRadius))
-            {
-                graphics.FillPath(brush, path);
-            }
-        }
-
-        public static void DrawRoundedRectangle(this Graphics graphics, Pen pen, Rectangle bounds, int cornerRadius)
-        {
-            using (var path = GetRoundedRect(bounds, cornerRadius))
-            {
-                graphics.DrawPath(pen, path);
-            }
-        }
-
-        private static System.Drawing.Drawing2D.GraphicsPath GetRoundedRect(Rectangle bounds, int radius)
-        {
-            int diameter = radius * 2;
-            var path = new System.Drawing.Drawing2D.GraphicsPath();
-            var arc = new Rectangle(bounds.Location, new Size(diameter, diameter));
-
-            // Top left corner
-            path.AddArc(arc, 180, 90);
-
-            // Top right corner
-            arc.X = bounds.Right - diameter;
-            path.AddArc(arc, 270, 90);
-
-            // Bottom right corner
-            arc.Y = bounds.Bottom - diameter;
-            path.AddArc(arc, 0, 90);
-
-            // Bottom left corner
-            arc.X = bounds.Left;
-            path.AddArc(arc, 90, 90);
-
-            path.CloseFigure();
-            return path;
         }
     }
 }

@@ -45,9 +45,28 @@ namespace CpTiendaRopa
             lblFecha.Text = DateTime.Now.ToString("dddd, dd 'de' MMMM yyyy");
             
             CrearAvatarUsuario();
-            AgregarBotonToggleSidebar(); // 🔥 TOGGLE RESTAURADO
+            CrearLogoConIcono(); // 🔥 NUEVO - Agregar esta línea
+            AgregarBotonToggleSidebar();
             MostrarInicio();
             MarcarBotonActivo(btnInicio);
+        }
+
+        // 🔥 AGREGAR ESTE MÉTODO NUEVO después de FrmDashboard_Load
+        private void CrearLogoConIcono()
+        {
+            // Crear icono de tienda con FontAwesome
+            var iconoTienda = new FontAwesome.Sharp.IconPictureBox
+            {
+                IconChar = FontAwesome.Sharp.IconChar.Store,
+                IconColor = Color.FromArgb(96, 165, 250), // Azul claro
+                IconSize = 48,
+                Size = new Size(55, 55),
+                Location = new Point(20, 30),
+                BackColor = Color.Transparent
+            };
+            
+            pnlLogo.Controls.Add(iconoTienda);
+            iconoTienda.BringToFront();
         }
 
         // 🔥 BOTÓN TOGGLE SIDEBAR

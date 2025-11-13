@@ -15,312 +15,479 @@
 
         private void InitializeComponent()
         {
-            this.pnlSuperior = new System.Windows.Forms.Panel();
-            this.lblTitulo = new MaterialSkin.Controls.MaterialLabel();
-            this.pnlIzquierdo = new System.Windows.Forms.Panel();
-            this.pnlBotonesAccion = new System.Windows.Forms.Panel();
-            this.btnGuardar = new MaterialSkin.Controls.MaterialButton();
-            this.btnCancelar = new MaterialSkin.Controls.MaterialButton();
-            this.btnNuevo = new MaterialSkin.Controls.MaterialButton();
-            this.btnEditar = new MaterialSkin.Controls.MaterialButton();
-            this.btnEliminar = new MaterialSkin.Controls.MaterialButton();
-            this.cardDatos = new MaterialSkin.Controls.MaterialCard();
-            this.txtDescripcion = new MaterialSkin.Controls.MaterialTextBox();
-            this.txtNombre = new MaterialSkin.Controls.MaterialTextBox();
-            this.pnlDerecho = new System.Windows.Forms.Panel();
-            this.dgvCategorias = new System.Windows.Forms.DataGridView();
-            this.pnlSuperior.SuspendLayout();
-            this.pnlIzquierdo.SuspendLayout();
-            this.pnlBotonesAccion.SuspendLayout();
-            this.cardDatos.SuspendLayout();
-            this.pnlDerecho.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvCategorias)).BeginInit();
-            this.SuspendLayout();
+            pnlContenedor = new Panel();
+            pnlGrid = new Panel();
+            dgvCategorias = new DataGridView();
+            pnlPaginacion = new Panel();
+            btnSiguiente = new MaterialSkin.Controls.MaterialButton();
+            btnAnterior = new MaterialSkin.Controls.MaterialButton();
+            lblPaginacion = new Label();
+            pnlBusqueda = new Panel();
+            btnBuscar = new MaterialSkin.Controls.MaterialButton();
+            txtBuscar = new MaterialSkin.Controls.MaterialTextBox();
+            lblSubtitulo = new Label();
+            pnlFormulario = new Panel();
+            cardDatos = new MaterialSkin.Controls.MaterialCard();
+            pnlBotones = new Panel();
+            btnGuardar = new MaterialSkin.Controls.MaterialButton();
+            btnCancelar = new MaterialSkin.Controls.MaterialButton();
+            btnNuevo = new MaterialSkin.Controls.MaterialButton();
+            btnEditar = new MaterialSkin.Controls.MaterialButton();
+            btnEliminar = new MaterialSkin.Controls.MaterialButton();
+            txtDescripcion = new MaterialSkin.Controls.MaterialTextBox();
+            txtNombre = new MaterialSkin.Controls.MaterialTextBox();
+            pnlSuperior = new Panel();
+            lblTitulo = new MaterialSkin.Controls.MaterialLabel();
+            pnlContenedor.SuspendLayout();
+            pnlGrid.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvCategorias).BeginInit();
+            pnlPaginacion.SuspendLayout();
+            pnlBusqueda.SuspendLayout();
+            pnlFormulario.SuspendLayout();
+            cardDatos.SuspendLayout();
+            pnlBotones.SuspendLayout();
+            pnlSuperior.SuspendLayout();
+            SuspendLayout();
+            // 
+            // pnlContenedor
+            // 
+            pnlContenedor.AutoScroll = true;
+            pnlContenedor.BackColor = Color.FromArgb(249, 250, 251);
+            pnlContenedor.Controls.Add(pnlGrid);
+            pnlContenedor.Controls.Add(pnlBusqueda);
+            pnlContenedor.Controls.Add(pnlFormulario);
+            pnlContenedor.Controls.Add(pnlSuperior);
+            pnlContenedor.Dock = DockStyle.Fill;
+            pnlContenedor.Location = new Point(0, 0);
+            pnlContenedor.Name = "pnlContenedor";
+            pnlContenedor.Size = new Size(1060, 576);
+            pnlContenedor.TabIndex = 0;
             // 
             // pnlSuperior
             // 
-            this.pnlSuperior.BackColor = System.Drawing.Color.White;
-            this.pnlSuperior.Controls.Add(this.lblTitulo);
-            this.pnlSuperior.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlSuperior.Location = new System.Drawing.Point(0, 0);
-            this.pnlSuperior.Name = "pnlSuperior";
-            this.pnlSuperior.Padding = new System.Windows.Forms.Padding(15, 8, 15, 8);
-            this.pnlSuperior.Size = new System.Drawing.Size(1060, 50);
-            this.pnlSuperior.TabIndex = 0;
+            pnlSuperior.BackColor = Color.White;
+            pnlSuperior.Controls.Add(lblTitulo);
+            pnlSuperior.Dock = DockStyle.Top;
+            pnlSuperior.Location = new Point(0, 0);
+            pnlSuperior.Name = "pnlSuperior";
+            pnlSuperior.Padding = new Padding(20, 15, 20, 15);
+            pnlSuperior.Size = new Size(1043, 65);
+            pnlSuperior.TabIndex = 0;
             // 
             // lblTitulo
             // 
-            this.lblTitulo.AutoSize = true;
-            this.lblTitulo.Depth = 0;
-            this.lblTitulo.Font = new System.Drawing.Font("Roboto", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTitulo.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            this.lblTitulo.Location = new System.Drawing.Point(15, 12);
-            this.lblTitulo.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(221, 24);
-            this.lblTitulo.TabIndex = 0;
-            this.lblTitulo.Text = "📑 Gestión de Categorías";
+            lblTitulo.AutoSize = true;
+            lblTitulo.Depth = 0;
+            lblTitulo.Dock = DockStyle.Left;
+            lblTitulo.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
+            lblTitulo.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
+            lblTitulo.Location = new Point(20, 15);
+            lblTitulo.MouseState = MaterialSkin.MouseState.HOVER;
+            lblTitulo.Name = "lblTitulo";
+            lblTitulo.Size = new Size(252, 29);
+            lblTitulo.TabIndex = 0;
+            lblTitulo.Text = "🏷️ Gestión de Categorías";
             // 
-            // pnlIzquierdo
+            // pnlFormulario
             // 
-            this.pnlIzquierdo.Controls.Add(this.pnlBotonesAccion);
-            this.pnlIzquierdo.Controls.Add(this.cardDatos);
-            this.pnlIzquierdo.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pnlIzquierdo.Location = new System.Drawing.Point(0, 50);
-            this.pnlIzquierdo.Name = "pnlIzquierdo";
-            this.pnlIzquierdo.Padding = new System.Windows.Forms.Padding(10, 5, 5, 5);
-            this.pnlIzquierdo.Size = new System.Drawing.Size(380, 526);
-            this.pnlIzquierdo.TabIndex = 1;
-            // 
-            // pnlBotonesAccion
-            // 
-            this.pnlBotonesAccion.Controls.Add(this.btnNuevo);
-            this.pnlBotonesAccion.Controls.Add(this.btnEditar);
-            this.pnlBotonesAccion.Controls.Add(this.btnEliminar);
-            this.pnlBotonesAccion.Controls.Add(this.btnGuardar);
-            this.pnlBotonesAccion.Controls.Add(this.btnCancelar);
-            this.pnlBotonesAccion.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlBotonesAccion.Location = new System.Drawing.Point(10, 245);
-            this.pnlBotonesAccion.Name = "pnlBotonesAccion";
-            this.pnlBotonesAccion.Padding = new System.Windows.Forms.Padding(10);
-            this.pnlBotonesAccion.Size = new System.Drawing.Size(365, 276);
-            this.pnlBotonesAccion.TabIndex = 1;
-            // 
-            // btnGuardar
-            // 
-            this.btnGuardar.AutoSize = false;
-            this.btnGuardar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnGuardar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnGuardar.Depth = 0;
-            this.btnGuardar.HighEmphasis = true;
-            this.btnGuardar.Icon = null;
-            this.btnGuardar.Location = new System.Drawing.Point(15, 55);
-            this.btnGuardar.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnGuardar.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnGuardar.Size = new System.Drawing.Size(160, 36);
-            this.btnGuardar.TabIndex = 3;
-            this.btnGuardar.Text = "💾 Guardar";
-            this.btnGuardar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnGuardar.UseAccentColor = true;
-            this.btnGuardar.UseVisualStyleBackColor = true;
-            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
-            // 
-            // btnCancelar
-            // 
-            this.btnCancelar.AutoSize = false;
-            this.btnCancelar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnCancelar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnCancelar.Depth = 0;
-            this.btnCancelar.HighEmphasis = false;
-            this.btnCancelar.Icon = null;
-            this.btnCancelar.Location = new System.Drawing.Point(185, 55);
-            this.btnCancelar.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnCancelar.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnCancelar.Size = new System.Drawing.Size(160, 36);
-            this.btnCancelar.TabIndex = 4;
-            this.btnCancelar.Text = "❌ Cancelar";
-            this.btnCancelar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
-            this.btnCancelar.UseAccentColor = false;
-            this.btnCancelar.UseVisualStyleBackColor = true;
-            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
-            // 
-            // btnNuevo
-            // 
-            this.btnNuevo.AutoSize = false;
-            this.btnNuevo.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnNuevo.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnNuevo.Depth = 0;
-            this.btnNuevo.HighEmphasis = true;
-            this.btnNuevo.Icon = null;
-            this.btnNuevo.Location = new System.Drawing.Point(15, 10);
-            this.btnNuevo.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnNuevo.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnNuevo.Name = "btnNuevo";
-            this.btnNuevo.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnNuevo.Size = new System.Drawing.Size(105, 32);
-            this.btnNuevo.TabIndex = 0;
-            this.btnNuevo.Text = "➕ Nuevo";
-            this.btnNuevo.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnNuevo.UseAccentColor = false;
-            this.btnNuevo.UseVisualStyleBackColor = true;
-            this.btnNuevo.Click += new System.EventHandler(this.btnNuevo_Click);
-            // 
-            // btnEditar
-            // 
-            this.btnEditar.AutoSize = false;
-            this.btnEditar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnEditar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnEditar.Depth = 0;
-            this.btnEditar.HighEmphasis = true;
-            this.btnEditar.Icon = null;
-            this.btnEditar.Location = new System.Drawing.Point(130, 10);
-            this.btnEditar.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnEditar.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnEditar.Name = "btnEditar";
-            this.btnEditar.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnEditar.Size = new System.Drawing.Size(105, 32);
-            this.btnEditar.TabIndex = 1;
-            this.btnEditar.Text = "✏️ Editar";
-            this.btnEditar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnEditar.UseAccentColor = false;
-            this.btnEditar.UseVisualStyleBackColor = true;
-            this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click);
-            // 
-            // btnEliminar
-            // 
-            this.btnEliminar.AutoSize = false;
-            this.btnEliminar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnEliminar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnEliminar.Depth = 0;
-            this.btnEliminar.HighEmphasis = true;
-            this.btnEliminar.Icon = null;
-            this.btnEliminar.Location = new System.Drawing.Point(245, 10);
-            this.btnEliminar.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnEliminar.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnEliminar.Name = "btnEliminar";
-            this.btnEliminar.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnEliminar.Size = new System.Drawing.Size(105, 32);
-            this.btnEliminar.TabIndex = 2;
-            this.btnEliminar.Text = "🗑️ Eliminar";
-            this.btnEliminar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnEliminar.UseAccentColor = false;
-            this.btnEliminar.UseVisualStyleBackColor = true;
-            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
+            pnlFormulario.BackColor = Color.FromArgb(249, 250, 251);
+            pnlFormulario.Controls.Add(cardDatos);
+            pnlFormulario.Dock = DockStyle.Top;
+            pnlFormulario.Location = new Point(0, 65);
+            pnlFormulario.Name = "pnlFormulario";
+            pnlFormulario.Padding = new Padding(20, 15, 20, 15);
+            pnlFormulario.Size = new Size(1043, 180);
+            pnlFormulario.TabIndex = 1;
             // 
             // cardDatos
             // 
-            this.cardDatos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cardDatos.Controls.Add(this.txtDescripcion);
-            this.cardDatos.Controls.Add(this.txtNombre);
-            this.cardDatos.Depth = 0;
-            this.cardDatos.Dock = System.Windows.Forms.DockStyle.Top;
-            this.cardDatos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.cardDatos.Location = new System.Drawing.Point(10, 5);
-            this.cardDatos.Margin = new System.Windows.Forms.Padding(10);
-            this.cardDatos.MouseState = MaterialSkin.MouseState.HOVER;
-            this.cardDatos.Name = "cardDatos";
-            this.cardDatos.Padding = new System.Windows.Forms.Padding(15);
-            this.cardDatos.Size = new System.Drawing.Size(365, 240);
-            this.cardDatos.TabIndex = 0;
+            cardDatos.BackColor = Color.White;
+            cardDatos.Controls.Add(pnlBotones);
+            cardDatos.Controls.Add(txtDescripcion);
+            cardDatos.Controls.Add(txtNombre);
+            cardDatos.Depth = 0;
+            cardDatos.Dock = DockStyle.Fill;
+            cardDatos.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cardDatos.Location = new Point(20, 15);
+            cardDatos.Margin = new Padding(14);
+            cardDatos.MouseState = MaterialSkin.MouseState.HOVER;
+            cardDatos.Name = "cardDatos";
+            cardDatos.Padding = new Padding(25, 20, 25, 20);
+            cardDatos.Size = new Size(1003, 150);
+            cardDatos.TabIndex = 0;
+            // 
+            // pnlBotones
+            // 
+            pnlBotones.Controls.Add(btnGuardar);
+            pnlBotones.Controls.Add(btnCancelar);
+            pnlBotones.Controls.Add(btnNuevo);
+            pnlBotones.Controls.Add(btnEditar);
+            pnlBotones.Controls.Add(btnEliminar);
+            pnlBotones.Dock = DockStyle.Right;
+            pnlBotones.Location = new Point(638, 20);
+            pnlBotones.Name = "pnlBotones";
+            pnlBotones.Padding = new Padding(20, 0, 0, 0);
+            pnlBotones.Size = new Size(340, 110);
+            pnlBotones.TabIndex = 2;
+            // 
+            // btnGuardar
+            // 
+            btnGuardar.AutoSize = false;
+            btnGuardar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnGuardar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnGuardar.Depth = 0;
+            btnGuardar.HighEmphasis = true;
+            btnGuardar.Icon = null;
+            btnGuardar.Location = new Point(20, 60);
+            btnGuardar.Margin = new Padding(4, 6, 4, 6);
+            btnGuardar.MouseState = MaterialSkin.MouseState.HOVER;
+            btnGuardar.Name = "btnGuardar";
+            btnGuardar.NoAccentTextColor = Color.Empty;
+            btnGuardar.Size = new Size(150, 42);
+            btnGuardar.TabIndex = 3;
+            btnGuardar.Text = "💾 Guardar";
+            btnGuardar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnGuardar.UseAccentColor = true;
+            btnGuardar.UseVisualStyleBackColor = true;
+            btnGuardar.Click += btnGuardar_Click;
+            // 
+            // btnCancelar
+            // 
+            btnCancelar.AutoSize = false;
+            btnCancelar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnCancelar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnCancelar.Depth = 0;
+            btnCancelar.HighEmphasis = false;
+            btnCancelar.Icon = null;
+            btnCancelar.Location = new Point(180, 60);
+            btnCancelar.Margin = new Padding(4, 6, 4, 6);
+            btnCancelar.MouseState = MaterialSkin.MouseState.HOVER;
+            btnCancelar.Name = "btnCancelar";
+            btnCancelar.NoAccentTextColor = Color.Empty;
+            btnCancelar.Size = new Size(150, 42);
+            btnCancelar.TabIndex = 4;
+            btnCancelar.Text = "❌ Cancelar";
+            btnCancelar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            btnCancelar.UseAccentColor = false;
+            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += btnCancelar_Click;
+            // 
+            // btnNuevo
+            // 
+            btnNuevo.AutoSize = false;
+            btnNuevo.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnNuevo.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnNuevo.Depth = 0;
+            btnNuevo.HighEmphasis = true;
+            btnNuevo.Icon = null;
+            btnNuevo.Location = new Point(20, 10);
+            btnNuevo.Margin = new Padding(4, 6, 4, 6);
+            btnNuevo.MouseState = MaterialSkin.MouseState.HOVER;
+            btnNuevo.Name = "btnNuevo";
+            btnNuevo.NoAccentTextColor = Color.Empty;
+            btnNuevo.Size = new Size(100, 38);
+            btnNuevo.TabIndex = 0;
+            btnNuevo.Text = "➕ Nuevo";
+            btnNuevo.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnNuevo.UseAccentColor = false;
+            btnNuevo.UseVisualStyleBackColor = true;
+            btnNuevo.Click += btnNuevo_Click;
+            // 
+            // btnEditar
+            // 
+            btnEditar.AutoSize = false;
+            btnEditar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnEditar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnEditar.Depth = 0;
+            btnEditar.HighEmphasis = true;
+            btnEditar.Icon = null;
+            btnEditar.Location = new Point(130, 10);
+            btnEditar.Margin = new Padding(4, 6, 4, 6);
+            btnEditar.MouseState = MaterialSkin.MouseState.HOVER;
+            btnEditar.Name = "btnEditar";
+            btnEditar.NoAccentTextColor = Color.Empty;
+            btnEditar.Size = new Size(95, 38);
+            btnEditar.TabIndex = 1;
+            btnEditar.Text = "✏️ Editar";
+            btnEditar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnEditar.UseAccentColor = false;
+            btnEditar.UseVisualStyleBackColor = true;
+            btnEditar.Visible = false;
+            btnEditar.Click += btnEditar_Click;
+            // 
+            // btnEliminar
+            // 
+            btnEliminar.AutoSize = false;
+            btnEliminar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnEliminar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnEliminar.Depth = 0;
+            btnEliminar.HighEmphasis = true;
+            btnEliminar.Icon = null;
+            btnEliminar.Location = new Point(235, 10);
+            btnEliminar.Margin = new Padding(4, 6, 4, 6);
+            btnEliminar.MouseState = MaterialSkin.MouseState.HOVER;
+            btnEliminar.Name = "btnEliminar";
+            btnEliminar.NoAccentTextColor = Color.Empty;
+            btnEliminar.Size = new Size(95, 38);
+            btnEliminar.TabIndex = 2;
+            btnEliminar.Text = "🗑️ Eliminar";
+            btnEliminar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnEliminar.UseAccentColor = false;
+            btnEliminar.UseVisualStyleBackColor = true;
+            btnEliminar.Visible = false;
+            btnEliminar.Click += btnEliminar_Click;
             // 
             // txtNombre
             // 
-            this.txtNombre.AnimateReadOnly = false;
-            this.txtNombre.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtNombre.Depth = 0;
-            this.txtNombre.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtNombre.Hint = "Nombre de la categoría";
-            this.txtNombre.LeadingIcon = null;
-            this.txtNombre.Location = new System.Drawing.Point(15, 15);
-            this.txtNombre.MaxLength = 50;
-            this.txtNombre.MouseState = MaterialSkin.MouseState.OUT;
-            this.txtNombre.Multiline = false;
-            this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(335, 50);
-            this.txtNombre.TabIndex = 0;
-            this.txtNombre.Text = "";
-            this.txtNombre.TrailingIcon = null;
+            txtNombre.AnimateReadOnly = false;
+            txtNombre.BorderStyle = BorderStyle.None;
+            txtNombre.Depth = 0;
+            txtNombre.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtNombre.Hint = "🏷️ Nombre de la categoría";
+            txtNombre.LeadingIcon = null;
+            txtNombre.Location = new Point(25, 15);
+            txtNombre.MaxLength = 50;
+            txtNombre.MouseState = MaterialSkin.MouseState.OUT;
+            txtNombre.Multiline = false;
+            txtNombre.Name = "txtNombre";
+            txtNombre.Size = new Size(580, 50);
+            txtNombre.TabIndex = 0;
+            txtNombre.Text = "";
+            txtNombre.TrailingIcon = null;
             // 
             // txtDescripcion
             // 
-            this.txtDescripcion.AnimateReadOnly = false;
-            this.txtDescripcion.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtDescripcion.Depth = 0;
-            this.txtDescripcion.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtDescripcion.Hint = "Descripción (opcional)";
-            this.txtDescripcion.LeadingIcon = null;
-            this.txtDescripcion.Location = new System.Drawing.Point(15, 80);
-            this.txtDescripcion.MaxLength = 200;
-            this.txtDescripcion.MouseState = MaterialSkin.MouseState.OUT;
-            this.txtDescripcion.Multiline = true;
-            this.txtDescripcion.Name = "txtDescripcion";
-            this.txtDescripcion.Size = new System.Drawing.Size(335, 130);
-            this.txtDescripcion.TabIndex = 1;
-            this.txtDescripcion.Text = "";
-            this.txtDescripcion.TrailingIcon = null;
+            txtDescripcion.AnimateReadOnly = false;
+            txtDescripcion.BorderStyle = BorderStyle.None;
+            txtDescripcion.Depth = 0;
+            txtDescripcion.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtDescripcion.Hint = "📝 Descripción (opcional)";
+            txtDescripcion.LeadingIcon = null;
+            txtDescripcion.Location = new Point(25, 70);
+            txtDescripcion.MaxLength = 200;
+            txtDescripcion.MouseState = MaterialSkin.MouseState.OUT;
+            txtDescripcion.Multiline = false;
+            txtDescripcion.Name = "txtDescripcion";
+            txtDescripcion.Size = new Size(580, 50);
+            txtDescripcion.TabIndex = 1;
+            txtDescripcion.Text = "";
+            txtDescripcion.TrailingIcon = null;
             // 
-            // pnlBotonesAccion
+            // pnlBusqueda
             // 
-            this.pnlBotonesAccion.Controls.Add(this.btnNuevo);
-            this.pnlBotonesAccion.Controls.Add(this.btnEditar);
-            this.pnlBotonesAccion.Controls.Add(this.btnEliminar);
-            this.pnlBotonesAccion.Controls.Add(this.btnGuardar);
-            this.pnlBotonesAccion.Controls.Add(this.btnCancelar);
-            this.pnlBotonesAccion.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlBotonesAccion.Location = new System.Drawing.Point(10, 245);
-            this.pnlBotonesAccion.Name = "pnlBotonesAccion";
-            this.pnlBotonesAccion.Padding = new System.Windows.Forms.Padding(10);
-            this.pnlBotonesAccion.Size = new System.Drawing.Size(365, 276);
-            this.pnlBotonesAccion.TabIndex = 1;
+            pnlBusqueda.BackColor = Color.White;
+            pnlBusqueda.Controls.Add(btnBuscar);
+            pnlBusqueda.Controls.Add(txtBuscar);
+            pnlBusqueda.Controls.Add(lblSubtitulo);
+            pnlBusqueda.Dock = DockStyle.Top;
+            pnlBusqueda.Location = new Point(0, 245);
+            pnlBusqueda.Name = "pnlBusqueda";
+            pnlBusqueda.Padding = new Padding(20, 10, 20, 10);
+            pnlBusqueda.Size = new Size(1043, 70);
+            pnlBusqueda.TabIndex = 2;
             // 
-            // pnlDerecho
+            // btnBuscar
             // 
-            this.pnlDerecho.Controls.Add(this.dgvCategorias);
-            this.pnlDerecho.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlDerecho.Location = new System.Drawing.Point(380, 50);
-            this.pnlDerecho.Name = "pnlDerecho";
-            this.pnlDerecho.Padding = new System.Windows.Forms.Padding(5, 5, 10, 5);
-            this.pnlDerecho.Size = new System.Drawing.Size(680, 526);
-            this.pnlDerecho.TabIndex = 2;
+            btnBuscar.AutoSize = false;
+            btnBuscar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnBuscar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnBuscar.Depth = 0;
+            btnBuscar.Dock = DockStyle.Right;
+            btnBuscar.HighEmphasis = true;
+            btnBuscar.Icon = null;
+            btnBuscar.Location = new Point(903, 10);
+            btnBuscar.Margin = new Padding(4, 6, 4, 6);
+            btnBuscar.MouseState = MaterialSkin.MouseState.HOVER;
+            btnBuscar.Name = "btnBuscar";
+            btnBuscar.NoAccentTextColor = Color.Empty;
+            btnBuscar.Size = new Size(120, 50);
+            btnBuscar.TabIndex = 2;
+            btnBuscar.Text = "🔍 Buscar";
+            btnBuscar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnBuscar.UseAccentColor = false;
+            btnBuscar.UseVisualStyleBackColor = true;
+            btnBuscar.Click += btnBuscar_Click;
+            // 
+            // txtBuscar
+            // 
+            txtBuscar.AnimateReadOnly = false;
+            txtBuscar.BorderStyle = BorderStyle.None;
+            txtBuscar.Depth = 0;
+            txtBuscar.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtBuscar.Hint = "Buscar por nombre o descripción...";
+            txtBuscar.LeadingIcon = null;
+            txtBuscar.Location = new Point(230, 10);
+            txtBuscar.MaxLength = 50;
+            txtBuscar.MouseState = MaterialSkin.MouseState.OUT;
+            txtBuscar.Multiline = false;
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.Size = new Size(663, 50);
+            txtBuscar.TabIndex = 1;
+            txtBuscar.Text = "";
+            txtBuscar.TrailingIcon = null;
+            txtBuscar.KeyPress += txtBuscar_KeyPress;
+            // 
+            // lblSubtitulo
+            // 
+            lblSubtitulo.AutoSize = true;
+            lblSubtitulo.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            lblSubtitulo.ForeColor = Color.FromArgb(31, 41, 55);
+            lblSubtitulo.Location = new Point(20, 25);
+            lblSubtitulo.Name = "lblSubtitulo";
+            lblSubtitulo.Size = new Size(175, 21);
+            lblSubtitulo.TabIndex = 0;
+            lblSubtitulo.Text = "📋 Lista de Categorías";
+            // 
+            // pnlGrid
+            // 
+            pnlGrid.BackColor = Color.FromArgb(249, 250, 251);
+            pnlGrid.Controls.Add(dgvCategorias);
+            pnlGrid.Controls.Add(pnlPaginacion);
+            pnlGrid.Dock = DockStyle.Top;
+            pnlGrid.Location = new Point(0, 315);
+            pnlGrid.Name = "pnlGrid";
+            pnlGrid.Padding = new Padding(20, 10, 20, 10);
+            pnlGrid.Size = new Size(1043, 520);
+            pnlGrid.TabIndex = 3;
             // 
             // dgvCategorias
             // 
-            this.dgvCategorias.AllowUserToAddRows = false;
-            this.dgvCategorias.AllowUserToDeleteRows = false;
-            this.dgvCategorias.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvCategorias.BackgroundColor = System.Drawing.Color.White;
-            this.dgvCategorias.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvCategorias.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvCategorias.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvCategorias.Location = new System.Drawing.Point(5, 5);
-            this.dgvCategorias.MultiSelect = false;
-            this.dgvCategorias.Name = "dgvCategorias";
-            this.dgvCategorias.ReadOnly = true;
-            this.dgvCategorias.RowHeadersVisible = false;
-            this.dgvCategorias.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCategorias.Size = new System.Drawing.Size(665, 516);
-            this.dgvCategorias.TabIndex = 0;
+            dgvCategorias.AllowUserToAddRows = false;
+            dgvCategorias.AllowUserToDeleteRows = false;
+            dgvCategorias.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvCategorias.BackgroundColor = Color.White;
+            dgvCategorias.BorderStyle = BorderStyle.None;
+            dgvCategorias.ColumnHeadersHeight = 45;
+            dgvCategorias.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvCategorias.Dock = DockStyle.Fill;
+            dgvCategorias.EnableHeadersVisualStyles = false;
+            dgvCategorias.Location = new Point(20, 10);
+            dgvCategorias.MultiSelect = false;
+            dgvCategorias.Name = "dgvCategorias";
+            dgvCategorias.ReadOnly = true;
+            dgvCategorias.RowHeadersVisible = false;
+            dgvCategorias.RowTemplate.Height = 45;
+            dgvCategorias.ScrollBars = ScrollBars.None;
+            dgvCategorias.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvCategorias.Size = new Size(1003, 440);
+            dgvCategorias.TabIndex = 0;
+            // 
+            // pnlPaginacion
+            // 
+            pnlPaginacion.BackColor = Color.White;
+            pnlPaginacion.Controls.Add(btnSiguiente);
+            pnlPaginacion.Controls.Add(btnAnterior);
+            pnlPaginacion.Controls.Add(lblPaginacion);
+            pnlPaginacion.Dock = DockStyle.Bottom;
+            pnlPaginacion.Location = new Point(20, 450);
+            pnlPaginacion.Name = "pnlPaginacion";
+            pnlPaginacion.Padding = new Padding(15, 8, 15, 8);
+            pnlPaginacion.Size = new Size(1003, 60);
+            pnlPaginacion.TabIndex = 1;
+            // 
+            // btnSiguiente
+            // 
+            btnSiguiente.AutoSize = false;
+            btnSiguiente.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnSiguiente.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnSiguiente.Depth = 0;
+            btnSiguiente.Dock = DockStyle.Right;
+            btnSiguiente.HighEmphasis = false;
+            btnSiguiente.Icon = null;
+            btnSiguiente.Location = new Point(868, 8);
+            btnSiguiente.Margin = new Padding(4, 6, 4, 6);
+            btnSiguiente.MouseState = MaterialSkin.MouseState.HOVER;
+            btnSiguiente.Name = "btnSiguiente";
+            btnSiguiente.NoAccentTextColor = Color.Empty;
+            btnSiguiente.Size = new Size(120, 44);
+            btnSiguiente.TabIndex = 2;
+            btnSiguiente.Text = "Siguiente ▶";
+            btnSiguiente.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            btnSiguiente.UseAccentColor = false;
+            btnSiguiente.UseVisualStyleBackColor = true;
+            btnSiguiente.Click += btnSiguiente_Click;
+            // 
+            // btnAnterior
+            // 
+            btnAnterior.AutoSize = false;
+            btnAnterior.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnAnterior.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnAnterior.Depth = 0;
+            btnAnterior.Dock = DockStyle.Left;
+            btnAnterior.HighEmphasis = false;
+            btnAnterior.Icon = null;
+            btnAnterior.Location = new Point(15, 8);
+            btnAnterior.Margin = new Padding(4, 6, 4, 6);
+            btnAnterior.MouseState = MaterialSkin.MouseState.HOVER;
+            btnAnterior.Name = "btnAnterior";
+            btnAnterior.NoAccentTextColor = Color.Empty;
+            btnAnterior.Size = new Size(120, 44);
+            btnAnterior.TabIndex = 1;
+            btnAnterior.Text = "◀ Anterior";
+            btnAnterior.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            btnAnterior.UseAccentColor = false;
+            btnAnterior.UseVisualStyleBackColor = true;
+            btnAnterior.Click += btnAnterior_Click;
+            // 
+            // lblPaginacion
+            // 
+            lblPaginacion.Dock = DockStyle.Fill;
+            lblPaginacion.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblPaginacion.ForeColor = Color.FromArgb(75, 85, 99);
+            lblPaginacion.Location = new Point(135, 8);
+            lblPaginacion.Name = "lblPaginacion";
+            lblPaginacion.Size = new Size(733, 44);
+            lblPaginacion.TabIndex = 0;
+            lblPaginacion.Text = "Página 1 de 1 | Total: 0 categorías";
+            lblPaginacion.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // FrmCategoria
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
-            this.ClientSize = new System.Drawing.Size(1060, 576);
-            this.Controls.Add(this.pnlDerecho);
-            this.Controls.Add(this.pnlIzquierdo);
-            this.Controls.Add(this.pnlSuperior);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "FrmCategoria";
-            this.Text = "Gestión de Categorías";
-            this.Load += new System.EventHandler(this.FrmCategoria_Load);
-            this.pnlSuperior.ResumeLayout(false);
-            this.pnlSuperior.PerformLayout();
-            this.pnlIzquierdo.ResumeLayout(false);
-            this.pnlBotonesAccion.ResumeLayout(false);
-            this.cardDatos.ResumeLayout(false);
-            this.pnlDerecho.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvCategorias)).EndInit();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(245, 245, 245);
+            ClientSize = new Size(1060, 576);
+            Controls.Add(pnlContenedor);
+            FormBorderStyle = FormBorderStyle.None;
+            Name = "FrmCategoria";
+            Text = "Gestión de Categorías";
+            Load += FrmCategoria_Load;
+            pnlContenedor.ResumeLayout(false);
+            pnlGrid.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvCategorias).EndInit();
+            pnlPaginacion.ResumeLayout(false);
+            pnlBusqueda.ResumeLayout(false);
+            pnlBusqueda.PerformLayout();
+            pnlFormulario.ResumeLayout(false);
+            cardDatos.ResumeLayout(false);
+            pnlBotones.ResumeLayout(false);
+            pnlSuperior.ResumeLayout(false);
+            pnlSuperior.PerformLayout();
+            ResumeLayout(false);
         }
 
-        private System.Windows.Forms.Panel pnlSuperior;
+        private Panel pnlContenedor;
+        private Panel pnlSuperior;
         private MaterialSkin.Controls.MaterialLabel lblTitulo;
-        private System.Windows.Forms.Panel pnlIzquierdo;
+        private Panel pnlFormulario;
         private MaterialSkin.Controls.MaterialCard cardDatos;
         private MaterialSkin.Controls.MaterialTextBox txtNombre;
         private MaterialSkin.Controls.MaterialTextBox txtDescripcion;
-        private System.Windows.Forms.Panel pnlBotonesAccion;
+        private Panel pnlBotones;
         private MaterialSkin.Controls.MaterialButton btnNuevo;
         private MaterialSkin.Controls.MaterialButton btnEditar;
         private MaterialSkin.Controls.MaterialButton btnEliminar;
         private MaterialSkin.Controls.MaterialButton btnGuardar;
         private MaterialSkin.Controls.MaterialButton btnCancelar;
-        private System.Windows.Forms.Panel pnlDerecho;
-        private System.Windows.Forms.DataGridView dgvCategorias;
+        private Panel pnlBusqueda;
+        private Label lblSubtitulo;
+        private MaterialSkin.Controls.MaterialTextBox txtBuscar;
+        private MaterialSkin.Controls.MaterialButton btnBuscar;
+        private Panel pnlGrid;
+        private DataGridView dgvCategorias;
+        private Panel pnlPaginacion;
+        private MaterialSkin.Controls.MaterialButton btnAnterior;
+        private MaterialSkin.Controls.MaterialButton btnSiguiente;
+        private Label lblPaginacion;
     }
 }

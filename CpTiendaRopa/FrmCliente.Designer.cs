@@ -16,8 +16,16 @@
         private void InitializeComponent()
         {
             pnlContenedor = new Panel();
-            pnlSuperior = new Panel();
-            lblTitulo = new MaterialSkin.Controls.MaterialLabel();
+            pnlGrid = new Panel();
+            dgvClientes = new DataGridView();
+            pnlPaginacion = new Panel();
+            btnSiguiente = new MaterialSkin.Controls.MaterialButton();
+            lblPaginacion = new Label();
+            btnAnterior = new MaterialSkin.Controls.MaterialButton();
+            pnlBusqueda = new Panel();
+            btnBuscar = new MaterialSkin.Controls.MaterialButton();
+            txtBuscar = new MaterialSkin.Controls.MaterialTextBox();
+            lblSubtitulo = new Label();
             pnlFormulario = new Panel();
             cardDatos = new MaterialSkin.Controls.MaterialCard();
             pnlBotones = new Panel();
@@ -29,28 +37,20 @@
             txtTelefono = new MaterialSkin.Controls.MaterialTextBox();
             txtCI = new MaterialSkin.Controls.MaterialTextBox();
             txtNombre = new MaterialSkin.Controls.MaterialTextBox();
-            pnlBusqueda = new Panel();
-            btnBuscar = new MaterialSkin.Controls.MaterialButton();
-            txtBuscar = new MaterialSkin.Controls.MaterialTextBox();
-            lblSubtitulo = new Label();
-            pnlGrid = new Panel();
-            dgvClientes = new DataGridView();
-            pnlPaginacion = new Panel();
-            btnSiguiente = new MaterialSkin.Controls.MaterialButton();
-            btnAnterior = new MaterialSkin.Controls.MaterialButton();
-            lblPaginacion = new Label();
+            pnlSuperior = new Panel();
+            lblTitulo = new MaterialSkin.Controls.MaterialLabel();
             pnlContenedor.SuspendLayout();
-            pnlSuperior.SuspendLayout();
-            pnlFormulario.SuspendLayout();
-            cardDatos.SuspendLayout();
-            pnlBotones.SuspendLayout();
-            pnlBusqueda.SuspendLayout();
             pnlGrid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvClientes).BeginInit();
             pnlPaginacion.SuspendLayout();
+            pnlBusqueda.SuspendLayout();
+            pnlFormulario.SuspendLayout();
+            cardDatos.SuspendLayout();
+            pnlBotones.SuspendLayout();
+            pnlSuperior.SuspendLayout();
             SuspendLayout();
             // 
-            // pnlContenedor - 🔥 PANEL PRINCIPAL CON SCROLL
+            // pnlContenedor
             // 
             pnlContenedor.AutoScroll = true;
             pnlContenedor.BackColor = Color.FromArgb(249, 250, 251);
@@ -64,30 +64,173 @@
             pnlContenedor.Size = new Size(1060, 576);
             pnlContenedor.TabIndex = 0;
             // 
-            // pnlSuperior
+            // pnlGrid
             // 
-            pnlSuperior.BackColor = Color.White;
-            pnlSuperior.Controls.Add(lblTitulo);
-            pnlSuperior.Dock = DockStyle.Top;
-            pnlSuperior.Location = new Point(0, 0);
-            pnlSuperior.Name = "pnlSuperior";
-            pnlSuperior.Padding = new Padding(20, 15, 20, 15);
-            pnlSuperior.Size = new Size(1043, 65);
-            pnlSuperior.TabIndex = 0;
+            pnlGrid.BackColor = Color.FromArgb(249, 250, 251);
+            pnlGrid.Controls.Add(dgvClientes);
+            pnlGrid.Controls.Add(pnlPaginacion);
+            pnlGrid.Dock = DockStyle.Top;
+            pnlGrid.Location = new Point(0, 365);
+            pnlGrid.Name = "pnlGrid";
+            pnlGrid.Padding = new Padding(20, 10, 20, 10);
+            pnlGrid.Size = new Size(1043, 520);
+            pnlGrid.TabIndex = 3;
             // 
-            // lblTitulo
+            // dgvClientes
             // 
-            lblTitulo.AutoSize = true;
-            lblTitulo.Depth = 0;
-            lblTitulo.Dock = DockStyle.Left;
-            lblTitulo.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
-            lblTitulo.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
-            lblTitulo.Location = new Point(20, 15);
-            lblTitulo.MouseState = MaterialSkin.MouseState.HOVER;
-            lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(231, 29);
-            lblTitulo.TabIndex = 0;
-            lblTitulo.Text = "👥 Gestión de Clientes";
+            dgvClientes.AllowUserToAddRows = false;
+            dgvClientes.AllowUserToDeleteRows = false;
+            dgvClientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvClientes.BackgroundColor = Color.White;
+            dgvClientes.BorderStyle = BorderStyle.None;
+            dgvClientes.ColumnHeadersHeight = 45;
+            dgvClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvClientes.Dock = DockStyle.Fill;
+            dgvClientes.EnableHeadersVisualStyles = false;
+            dgvClientes.Location = new Point(20, 10);
+            dgvClientes.MultiSelect = false;
+            dgvClientes.Name = "dgvClientes";
+            dgvClientes.ReadOnly = true;
+            dgvClientes.RowHeadersVisible = false;
+            dgvClientes.RowTemplate.Height = 45;
+            dgvClientes.ScrollBars = ScrollBars.None;
+            dgvClientes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvClientes.Size = new Size(1003, 440);
+            dgvClientes.TabIndex = 0;
+            // 
+            // pnlPaginacion
+            // 
+            pnlPaginacion.BackColor = Color.White;
+            pnlPaginacion.Controls.Add(btnSiguiente);
+            pnlPaginacion.Controls.Add(lblPaginacion);
+            pnlPaginacion.Controls.Add(btnAnterior);
+            pnlPaginacion.Dock = DockStyle.Bottom;
+            pnlPaginacion.Location = new Point(20, 450);
+            pnlPaginacion.Name = "pnlPaginacion";
+            pnlPaginacion.Padding = new Padding(15, 8, 15, 8);
+            pnlPaginacion.Size = new Size(1003, 60);
+            pnlPaginacion.TabIndex = 1;
+            // 
+            // btnSiguiente
+            // 
+            btnSiguiente.AutoSize = false;
+            btnSiguiente.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnSiguiente.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnSiguiente.Depth = 0;
+            btnSiguiente.Dock = DockStyle.Right;
+            btnSiguiente.HighEmphasis = false;
+            btnSiguiente.Icon = null;
+            btnSiguiente.Location = new Point(868, 8);
+            btnSiguiente.Margin = new Padding(4, 6, 4, 6);
+            btnSiguiente.MouseState = MaterialSkin.MouseState.HOVER;
+            btnSiguiente.Name = "btnSiguiente";
+            btnSiguiente.NoAccentTextColor = Color.Empty;
+            btnSiguiente.Size = new Size(120, 44);
+            btnSiguiente.TabIndex = 2;
+            btnSiguiente.Text = "Siguiente ▶";
+            btnSiguiente.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            btnSiguiente.UseAccentColor = false;
+            btnSiguiente.UseVisualStyleBackColor = true;
+            btnSiguiente.Click += btnSiguiente_Click;
+            // 
+            // lblPaginacion
+            // 
+            lblPaginacion.Dock = DockStyle.Fill;
+            lblPaginacion.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblPaginacion.ForeColor = Color.FromArgb(75, 85, 99);
+            lblPaginacion.Location = new Point(135, 8);
+            lblPaginacion.Name = "lblPaginacion";
+            lblPaginacion.Size = new Size(853, 44);
+            lblPaginacion.TabIndex = 1;
+            lblPaginacion.Text = "Página 1 de 1 | Total: 0 clientes";
+            lblPaginacion.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // btnAnterior
+            // 
+            btnAnterior.AutoSize = false;
+            btnAnterior.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnAnterior.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnAnterior.Depth = 0;
+            btnAnterior.Dock = DockStyle.Left;
+            btnAnterior.HighEmphasis = false;
+            btnAnterior.Icon = null;
+            btnAnterior.Location = new Point(15, 8);
+            btnAnterior.Margin = new Padding(4, 6, 4, 6);
+            btnAnterior.MouseState = MaterialSkin.MouseState.HOVER;
+            btnAnterior.Name = "btnAnterior";
+            btnAnterior.NoAccentTextColor = Color.Empty;
+            btnAnterior.Size = new Size(120, 44);
+            btnAnterior.TabIndex = 0;
+            btnAnterior.Text = "◀ Anterior";
+            btnAnterior.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            btnAnterior.UseAccentColor = false;
+            btnAnterior.UseVisualStyleBackColor = true;
+            btnAnterior.Click += btnAnterior_Click;
+            // 
+            // pnlBusqueda
+            // 
+            pnlBusqueda.BackColor = Color.White;
+            pnlBusqueda.Controls.Add(btnBuscar);
+            pnlBusqueda.Controls.Add(txtBuscar);
+            pnlBusqueda.Controls.Add(lblSubtitulo);
+            pnlBusqueda.Dock = DockStyle.Top;
+            pnlBusqueda.Location = new Point(0, 295);
+            pnlBusqueda.Name = "pnlBusqueda";
+            pnlBusqueda.Padding = new Padding(20, 10, 20, 10);
+            pnlBusqueda.Size = new Size(1043, 70);
+            pnlBusqueda.TabIndex = 2;
+            // 
+            // btnBuscar
+            // 
+            btnBuscar.AutoSize = false;
+            btnBuscar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnBuscar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnBuscar.Depth = 0;
+            btnBuscar.Dock = DockStyle.Right;
+            btnBuscar.HighEmphasis = true;
+            btnBuscar.Icon = null;
+            btnBuscar.Location = new Point(903, 10);
+            btnBuscar.Margin = new Padding(4, 6, 4, 6);
+            btnBuscar.MouseState = MaterialSkin.MouseState.HOVER;
+            btnBuscar.Name = "btnBuscar";
+            btnBuscar.NoAccentTextColor = Color.Empty;
+            btnBuscar.Size = new Size(120, 50);
+            btnBuscar.TabIndex = 2;
+            btnBuscar.Text = "🔍 Buscar";
+            btnBuscar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnBuscar.UseAccentColor = false;
+            btnBuscar.UseVisualStyleBackColor = true;
+            btnBuscar.Click += btnBuscar_Click;
+            // 
+            // txtBuscar
+            // 
+            txtBuscar.AnimateReadOnly = false;
+            txtBuscar.BorderStyle = BorderStyle.None;
+            txtBuscar.Depth = 0;
+            txtBuscar.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtBuscar.Hint = "Buscar por nombre, CI o teléfono...";
+            txtBuscar.LeadingIcon = null;
+            txtBuscar.Location = new Point(230, 10);
+            txtBuscar.MaxLength = 50;
+            txtBuscar.MouseState = MaterialSkin.MouseState.OUT;
+            txtBuscar.Multiline = false;
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.Size = new Size(663, 50);
+            txtBuscar.TabIndex = 1;
+            txtBuscar.Text = "";
+            txtBuscar.TrailingIcon = null;
+            txtBuscar.KeyPress += txtBuscar_KeyPress;
+            // 
+            // lblSubtitulo
+            // 
+            lblSubtitulo.AutoSize = true;
+            lblSubtitulo.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            lblSubtitulo.ForeColor = Color.FromArgb(31, 41, 55);
+            lblSubtitulo.Location = new Point(20, 25);
+            lblSubtitulo.Name = "lblSubtitulo";
+            lblSubtitulo.Size = new Size(152, 21);
+            lblSubtitulo.TabIndex = 0;
+            lblSubtitulo.Text = "📋 Lista de Clientes";
             // 
             // pnlFormulario
             // 
@@ -102,7 +245,7 @@
             // 
             // cardDatos
             // 
-            cardDatos.BackColor = Color.White;
+            cardDatos.BackColor = Color.FromArgb(255, 255, 255);
             cardDatos.Controls.Add(pnlBotones);
             cardDatos.Controls.Add(txtTelefono);
             cardDatos.Controls.Add(txtCI);
@@ -214,7 +357,7 @@
             btnEditar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnEditar.UseAccentColor = false;
             btnEditar.UseVisualStyleBackColor = true;
-            btnEditar.Visible = false; // 🔥 OCULTAR
+            btnEditar.Visible = false;
             btnEditar.Click += btnEditar_Click;
             // 
             // btnEliminar
@@ -236,44 +379,8 @@
             btnEliminar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnEliminar.UseAccentColor = false;
             btnEliminar.UseVisualStyleBackColor = true;
-            btnEliminar.Visible = false; // 🔥 OCULTAR
+            btnEliminar.Visible = false;
             btnEliminar.Click += btnEliminar_Click;
-            // 
-            // txtNombre
-            // 
-            txtNombre.AnimateReadOnly = false;
-            txtNombre.BorderStyle = BorderStyle.None;
-            txtNombre.Depth = 0;
-            txtNombre.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            txtNombre.Hint = "👤 Nombre completo del cliente";
-            txtNombre.LeadingIcon = null;
-            txtNombre.Location = new Point(25, 15);
-            txtNombre.MaxLength = 100;
-            txtNombre.MouseState = MaterialSkin.MouseState.OUT;
-            txtNombre.Multiline = false;
-            txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(580, 50);
-            txtNombre.TabIndex = 0;
-            txtNombre.Text = "";
-            txtNombre.TrailingIcon = null;
-            // 
-            // txtCI
-            // 
-            txtCI.AnimateReadOnly = false;
-            txtCI.BorderStyle = BorderStyle.None;
-            txtCI.Depth = 0;
-            txtCI.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            txtCI.Hint = "🆔 CI / NIT";
-            txtCI.LeadingIcon = null;
-            txtCI.Location = new Point(25, 70);
-            txtCI.MaxLength = 15;
-            txtCI.MouseState = MaterialSkin.MouseState.OUT;
-            txtCI.Multiline = false;
-            txtCI.Name = "txtCI";
-            txtCI.Size = new Size(580, 50);
-            txtCI.TabIndex = 1;
-            txtCI.Text = "";
-            txtCI.TrailingIcon = null;
             // 
             // txtTelefono
             // 
@@ -293,173 +400,66 @@
             txtTelefono.Text = "";
             txtTelefono.TrailingIcon = null;
             // 
-            // pnlBusqueda
+            // txtCI
             // 
-            pnlBusqueda.BackColor = Color.White;
-            pnlBusqueda.Controls.Add(btnBuscar);
-            pnlBusqueda.Controls.Add(txtBuscar);
-            pnlBusqueda.Controls.Add(lblSubtitulo);
-            pnlBusqueda.Dock = DockStyle.Top;
-            pnlBusqueda.Location = new Point(0, 295);
-            pnlBusqueda.Name = "pnlBusqueda";
-            pnlBusqueda.Padding = new Padding(20, 10, 20, 10);
-            pnlBusqueda.Size = new Size(1043, 70);
-            pnlBusqueda.TabIndex = 2;
+            txtCI.AnimateReadOnly = false;
+            txtCI.BorderStyle = BorderStyle.None;
+            txtCI.Depth = 0;
+            txtCI.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtCI.Hint = "🆔 CI / NIT";
+            txtCI.LeadingIcon = null;
+            txtCI.Location = new Point(25, 70);
+            txtCI.MaxLength = 15;
+            txtCI.MouseState = MaterialSkin.MouseState.OUT;
+            txtCI.Multiline = false;
+            txtCI.Name = "txtCI";
+            txtCI.Size = new Size(580, 50);
+            txtCI.TabIndex = 1;
+            txtCI.Text = "";
+            txtCI.TrailingIcon = null;
             // 
-            // btnBuscar
+            // txtNombre
             // 
-            btnBuscar.AutoSize = false;
-            btnBuscar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnBuscar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnBuscar.Depth = 0;
-            btnBuscar.Dock = DockStyle.Right;
-            btnBuscar.HighEmphasis = true;
-            btnBuscar.Icon = null;
-            btnBuscar.Location = new Point(903, 10);
-            btnBuscar.Margin = new Padding(4, 6, 4, 6);
-            btnBuscar.MouseState = MaterialSkin.MouseState.HOVER;
-            btnBuscar.Name = "btnBuscar";
-            btnBuscar.NoAccentTextColor = Color.Empty;
-            btnBuscar.Size = new Size(120, 50);
-            btnBuscar.TabIndex = 2;
-            btnBuscar.Text = "🔍 Buscar";
-            btnBuscar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnBuscar.UseAccentColor = false;
-            btnBuscar.UseVisualStyleBackColor = true;
-            btnBuscar.Click += btnBuscar_Click;
+            txtNombre.AnimateReadOnly = false;
+            txtNombre.BorderStyle = BorderStyle.None;
+            txtNombre.Depth = 0;
+            txtNombre.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtNombre.Hint = "👤 Nombre completo del cliente";
+            txtNombre.LeadingIcon = null;
+            txtNombre.Location = new Point(25, 15);
+            txtNombre.MaxLength = 100;
+            txtNombre.MouseState = MaterialSkin.MouseState.OUT;
+            txtNombre.Multiline = false;
+            txtNombre.Name = "txtNombre";
+            txtNombre.Size = new Size(580, 50);
+            txtNombre.TabIndex = 0;
+            txtNombre.Text = "";
+            txtNombre.TrailingIcon = null;
             // 
-            // txtBuscar
+            // pnlSuperior
             // 
-            txtBuscar.AnimateReadOnly = false;
-            txtBuscar.BorderStyle = BorderStyle.None;
-            txtBuscar.Depth = 0;
-            txtBuscar.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            txtBuscar.Hint = "Buscar por nombre, CI o teléfono...";
-            txtBuscar.LeadingIcon = null;
-            txtBuscar.Location = new Point(230, 10);
-            txtBuscar.MaxLength = 50;
-            txtBuscar.MouseState = MaterialSkin.MouseState.OUT;
-            txtBuscar.Multiline = false;
-            txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(663, 50);
-            txtBuscar.TabIndex = 1;
-            txtBuscar.Text = "";
-            txtBuscar.TrailingIcon = null;
-            txtBuscar.KeyPress += txtBuscar_KeyPress;
+            pnlSuperior.BackColor = Color.White;
+            pnlSuperior.Controls.Add(lblTitulo);
+            pnlSuperior.Dock = DockStyle.Top;
+            pnlSuperior.Location = new Point(0, 0);
+            pnlSuperior.Name = "pnlSuperior";
+            pnlSuperior.Padding = new Padding(20, 15, 20, 15);
+            pnlSuperior.Size = new Size(1043, 65);
+            pnlSuperior.TabIndex = 0;
             // 
-            // lblSubtitulo
+            // lblTitulo
             // 
-            lblSubtitulo.AutoSize = true;
-            lblSubtitulo.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-            lblSubtitulo.ForeColor = Color.FromArgb(31, 41, 55);
-            lblSubtitulo.Location = new Point(20, 25);
-            lblSubtitulo.Name = "lblSubtitulo";
-            lblSubtitulo.Size = new Size(159, 21);
-            lblSubtitulo.TabIndex = 0;
-            lblSubtitulo.Text = "📋 Lista de Clientes";
-            // 
-            // pnlGrid - 🔥 Panel con altura fija para 10 filas
-            // 
-            pnlGrid.BackColor = Color.FromArgb(249, 250, 251);
-            pnlGrid.Controls.Add(dgvClientes);
-            pnlGrid.Controls.Add(pnlPaginacion);
-            pnlGrid.Dock = DockStyle.Top;
-            pnlGrid.Location = new Point(0, 365);
-            pnlGrid.Name = "pnlGrid";
-            pnlGrid.Padding = new Padding(20, 10, 20, 10);
-            pnlGrid.Size = new Size(1043, 520); // 🔥 Altura fija para ~10 filas
-            pnlGrid.TabIndex = 3;
-            // 
-            // dgvClientes
-            // 
-            dgvClientes.AllowUserToAddRows = false;
-            dgvClientes.AllowUserToDeleteRows = false;
-            dgvClientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvClientes.BackgroundColor = Color.White;
-            dgvClientes.BorderStyle = BorderStyle.None;
-            dgvClientes.ColumnHeadersHeight = 45;
-            dgvClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvClientes.Dock = DockStyle.Fill;
-            dgvClientes.EnableHeadersVisualStyles = false;
-            dgvClientes.Location = new Point(20, 10);
-            dgvClientes.MultiSelect = false;
-            dgvClientes.Name = "dgvClientes";
-            dgvClientes.ReadOnly = true;
-            dgvClientes.RowHeadersVisible = false;
-            dgvClientes.RowTemplate.Height = 45; // 🔥 Altura de fila
-            dgvClientes.ScrollBars = ScrollBars.None; // 🔥 Sin scroll propio
-            dgvClientes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvClientes.Size = new Size(1003, 440);
-            dgvClientes.TabIndex = 0;
-            // 
-            // pnlPaginacion - 🔥 Panel de paginación
-            // 
-            pnlPaginacion.BackColor = Color.White;
-            pnlPaginacion.Controls.Add(btnSiguiente);
-            pnlPaginacion.Controls.Add(btnAnterior);
-            pnlPaginacion.Controls.Add(lblPaginacion);
-            pnlPaginacion.Dock = DockStyle.Bottom;
-            pnlPaginacion.Location = new Point(20, 450);
-            pnlPaginacion.Name = "pnlPaginacion";
-            pnlPaginacion.Padding = new Padding(15, 8, 15, 8);
-            pnlPaginacion.Size = new Size(1003, 60);
-            pnlPaginacion.TabIndex = 1;
-            // 
-            // btnSiguiente
-            // 
-            btnSiguiente.AutoSize = false;
-            btnSiguiente.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnSiguiente.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnSiguiente.Depth = 0;
-            btnSiguiente.Dock = DockStyle.Right;
-            btnSiguiente.HighEmphasis = false;
-            btnSiguiente.Icon = null;
-            btnSiguiente.Location = new Point(868, 8);
-            btnSiguiente.Margin = new Padding(4, 6, 4, 6);
-            btnSiguiente.MouseState = MaterialSkin.MouseState.HOVER;
-            btnSiguiente.Name = "btnSiguiente";
-            btnSiguiente.NoAccentTextColor = Color.Empty;
-            btnSiguiente.Size = new Size(120, 44);
-            btnSiguiente.TabIndex = 2;
-            btnSiguiente.Text = "Siguiente ▶";
-            btnSiguiente.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
-            btnSiguiente.UseAccentColor = false;
-            btnSiguiente.UseVisualStyleBackColor = true;
-            btnSiguiente.Click += btnSiguiente_Click;
-            // 
-            // btnAnterior
-            // 
-            btnAnterior.AutoSize = false;
-            btnAnterior.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnAnterior.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnAnterior.Depth = 0;
-            btnAnterior.Dock = DockStyle.Left;
-            btnAnterior.HighEmphasis = false;
-            btnAnterior.Icon = null;
-            btnAnterior.Location = new Point(15, 8);
-            btnAnterior.Margin = new Padding(4, 6, 4, 6);
-            btnAnterior.MouseState = MaterialSkin.MouseState.HOVER;
-            btnAnterior.Name = "btnAnterior";
-            btnAnterior.NoAccentTextColor = Color.Empty;
-            btnAnterior.Size = new Size(120, 44);
-            btnAnterior.TabIndex = 1;
-            btnAnterior.Text = "◀ Anterior";
-            btnAnterior.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
-            btnAnterior.UseAccentColor = false;
-            btnAnterior.UseVisualStyleBackColor = true;
-            btnAnterior.Click += btnAnterior_Click;
-            // 
-            // lblPaginacion
-            // 
-            lblPaginacion.Dock = DockStyle.Fill;
-            lblPaginacion.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            lblPaginacion.ForeColor = Color.FromArgb(75, 85, 99);
-            lblPaginacion.Location = new Point(135, 8);
-            lblPaginacion.Name = "lblPaginacion";
-            lblPaginacion.Size = new Size(733, 44);
-            lblPaginacion.TabIndex = 0;
-            lblPaginacion.Text = "Página 1 de 1 | Total: 0 clientes";
-            lblPaginacion.TextAlign = ContentAlignment.MiddleCenter;
+            lblTitulo.AutoSize = true;
+            lblTitulo.Depth = 0;
+            lblTitulo.Dock = DockStyle.Left;
+            lblTitulo.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
+            lblTitulo.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
+            lblTitulo.Location = new Point(20, 15);
+            lblTitulo.MouseState = MaterialSkin.MouseState.HOVER;
+            lblTitulo.Name = "lblTitulo";
+            lblTitulo.Size = new Size(241, 29);
+            lblTitulo.TabIndex = 0;
+            lblTitulo.Text = "👥 Gestión de Clientes";
             // 
             // FrmCliente
             // 
@@ -473,16 +473,16 @@
             Text = "Gestión de Clientes";
             Load += FrmCliente_Load;
             pnlContenedor.ResumeLayout(false);
-            pnlSuperior.ResumeLayout(false);
-            pnlSuperior.PerformLayout();
-            pnlFormulario.ResumeLayout(false);
-            cardDatos.ResumeLayout(false);
-            pnlBotones.ResumeLayout(false);
-            pnlBusqueda.ResumeLayout(false);
-            pnlBusqueda.PerformLayout();
             pnlGrid.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvClientes).EndInit();
             pnlPaginacion.ResumeLayout(false);
+            pnlBusqueda.ResumeLayout(false);
+            pnlBusqueda.PerformLayout();
+            pnlFormulario.ResumeLayout(false);
+            cardDatos.ResumeLayout(false);
+            pnlBotones.ResumeLayout(false);
+            pnlSuperior.ResumeLayout(false);
+            pnlSuperior.PerformLayout();
             ResumeLayout(false);
         }
 

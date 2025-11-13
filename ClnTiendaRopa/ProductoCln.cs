@@ -1,4 +1,5 @@
-using CadTiendaRopa;
+﻿using CadTiendaRopa;
+using System.Collections.Generic;
 
 namespace ClnTiendaRopa
 {
@@ -32,6 +33,12 @@ namespace ClnTiendaRopa
         public static List<Producto> buscar(string texto)
         {
             return new ProductoCad().buscar(texto);
+        }
+
+        // 🔥 MÉTODO PARA OBTENER CATEGORÍAS (para el ComboBox)
+        public static List<Categoria> listarCategorias()
+        {
+            return new CategoriaCad().listar();
         }
     }
 }
